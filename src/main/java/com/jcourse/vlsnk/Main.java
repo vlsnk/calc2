@@ -20,7 +20,7 @@ public class Main {
                 if (getFile(s)) {
                     calculator.addFile(s);
                 } else {
-                    calculator.addCommand(s);
+                    calculator.calculate(s);
                     if (s.startsWith("PRINT")) {
                         calculator.clear();
                     }
@@ -35,10 +35,6 @@ public class Main {
 
     static boolean getFile(String name){
         try {
-//            File file = new File(Context.getContext().toString(), name);
-//            if (file != null) {
-//                return true;
-//            }
             Path path = Paths.get("D:\\Idea Projects\\calc2\\src\\main\\resources\\" + name);
             return Files.exists(path) ? true : false;
 

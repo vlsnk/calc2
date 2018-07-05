@@ -1,5 +1,6 @@
 package com.jcourse.vlsnk.command;
 
+import com.jcourse.vlsnk.annotation.*;
 import com.jcourse.vlsnk.exception.NoDefinitionExcetpion;
 
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Stack;
 
 public class Push extends Command {
 
+    @InArgument(Arguments.FIND_VALUE)
     String var;
 
     public Push() {
