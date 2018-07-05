@@ -2,10 +2,19 @@ package com.jcourse.vlsnk.command;
 
 import com.jcourse.vlsnk.annotation.*;
 import com.jcourse.vlsnk.exception.*;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-public class Define extends Command {
+
+public class Define implements Command {
+
+    @InArgument(Arguments.STACK)
+    protected static Stack<Double> stack = new Stack<Double>();
+
+    @InArgument(Arguments.DEFINITIONS)
+    protected static Map<String, Double> vars = new HashMap<String, Double>();
 
     @InArgument(Arguments.SET_VAR)
     String setVar;
@@ -17,7 +26,8 @@ public class Define extends Command {
     }
 
     public Define(Stack<Double> stack, Map<String, Double> definitions) {
-        super(stack, definitions);
+        this.stack = stack;
+        this.vars = definitions;
     }
 
     public void addArgument(String[] args) throws CalculatorException {

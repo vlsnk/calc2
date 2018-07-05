@@ -3,10 +3,20 @@ package com.jcourse.vlsnk.command;
 import com.jcourse.vlsnk.annotation.*;
 import com.jcourse.vlsnk.exception.NoDefinitionExcetpion;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-public class Push extends Command {
+import static com.jcourse.vlsnk.annotation.Arguments.DEFINITIONS;
+import static com.jcourse.vlsnk.annotation.Arguments.STACK;
+
+public class Push implements Command {
+
+    @InArgument(STACK)
+    protected static Stack<Double> stack = new Stack<Double>();
+
+    @InArgument(DEFINITIONS)
+    protected static Map<String, Double> vars = new HashMap<String, Double>();
 
     @InArgument(Arguments.FIND_VALUE)
     String var;
@@ -15,7 +25,8 @@ public class Push extends Command {
     }
 
     public Push(Stack<Double> stack, Map<String, Double> definitions) {
-        super(stack, definitions);
+        this.stack = stack;
+        this.vars = definitions;
     }
 
     public void setPush(String s) {
@@ -25,7 +36,7 @@ public class Push extends Command {
     public void execute() throws NoDefinitionExcetpion {
         Double d = null;
         if (vars.containsKey(var)) {
-            d = super.vars.get(var);
+            d = vars.get(var);
         } else {
             d = Double.valueOf(var);
         }
