@@ -11,7 +11,6 @@ public class CalcInvocationHandler implements InvocationHandler {
 
     static Logger log = Logger.getLogger(CalcInvocationHandler.class);
     Command command;
-
     protected Stack<Double> stackBefore = new Stack<Double>();
     protected Map<String, Double> vars = new HashMap<String, Double>();
     static List<LogInfo> logInfoList = new ArrayList<>();
