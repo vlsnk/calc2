@@ -2,6 +2,8 @@ package com.jcourse.vlsnk.command;
 
 import com.jcourse.vlsnk.annotation.*;
 import com.jcourse.vlsnk.exception.*;
+import lombok.extern.log4j.Log4j;
+import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;

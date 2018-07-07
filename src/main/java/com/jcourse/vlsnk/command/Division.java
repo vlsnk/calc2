@@ -1,6 +1,7 @@
 package com.jcourse.vlsnk.command;
 
 import com.jcourse.vlsnk.annotation.InArgument;
+import com.jcourse.vlsnk.annotation.StackSize;
 import com.jcourse.vlsnk.exception.StackCalcException;
 
 import java.util.HashMap;

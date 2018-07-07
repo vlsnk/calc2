@@ -9,10 +9,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Proxy;
 import java.util.*;
 
 public class Calculator {
 
+    /*
+    Сделать отдельный класс commandFactory, в котором будет Map<Class, Object> res и
+    Map <String, COmmand> commands = new HashMap();
+    в конструкторе загрузка проперти
+    для всех команд из проперти выполнить Load
+     */
     protected Stack<Double> stack = new Stack<Double>();
     protected Map<String, Double> definitions = new HashMap<String, Double>();
     protected String[] args;
@@ -20,7 +27,7 @@ public class Calculator {
     Properties p = new Properties();
 
     public void calculate(String s) throws CalculatorException {
-        Command c = getCommand(s);
+        Command c = getProxyCommand(s);
         if (c != null) {
             c.execute();
         } else throw new WrongCommand("Wrong command");
@@ -33,9 +40,11 @@ public class Calculator {
         while (in.hasNextLine()) {
             calculate(in.nextLine());
         }
+        clear();
     }
 
     void clear(){
+        List<LogInfo> l = CalcInvocationHandler.getLog();
         stack.clear();
         definitions.clear();
     }
@@ -43,10 +52,8 @@ public class Calculator {
     public Command getCommand(String s) throws WrongArguments {
         args = s.split(" ");
         if (args.length==0) return null;
-        InputStream stream = null;
-        try {
+        try (InputStream stream = Calculator.class.getClassLoader().getResourceAsStream("command.properties")){
 
-            stream = Calculator.class.getClassLoader().getResourceAsStream("command.properties");
             p.load(stream);
             Class<?> commandClass = Class.forName(p.get(args[0]).toString());
             /* добавить в команды конструктор по-умолчанию.
@@ -89,11 +96,19 @@ public class Calculator {
 
             }
 
-            stream.close();
             return (Command) command;
         } catch (IOException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Command getProxyCommand(String s) throws WrongArguments {
+        Command c = getCommand(s);
+        Command cmd = (Command) Proxy.newProxyInstance(Command.class.getClassLoader(),
+                                                        new Class[] { Command.class },
+                                                        new CalcInvocationHandler(c, stack, definitions));
+
+        return cmd;
     }
 }

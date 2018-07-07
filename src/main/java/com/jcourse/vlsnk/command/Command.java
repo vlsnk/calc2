@@ -3,7 +3,7 @@ package com.jcourse.vlsnk.command;
 
 import com.jcourse.vlsnk.exception.CalculatorException;
 
-interface Command {
+public interface Command {
 
     void execute() throws CalculatorException;
 
